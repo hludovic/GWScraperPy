@@ -1,4 +1,5 @@
-from dataExtractor import DataExtractor
+from GWScraper.scraper import GWScraper
 
-ds = DataExtractor()
+ds = GWScraper()
 ds.getCSVData()
+ds.getJsonData()

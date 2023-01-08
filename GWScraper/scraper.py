@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import json
 import csv
 
-class DataExtractor:
+class GWScraper:
     def __init__(self) -> None:
         self.url = "https://wiki.guildwars.com/wiki/Daily_activities"
     
@@ -50,7 +50,6 @@ class DataExtractor:
                 description.append(td.text.strip())
             descriptions.append(description)
         return (headings, descriptions)
-
 
     def getJsonData(self):
         lines = self._scrapDataForJson()
