@@ -52,11 +52,17 @@ class GWScraper:
         return (headings, descriptions)
 
     def getJsonData(self):
+        """
+        Create a json that contanins the data.
+        """
         lines = self._scrapDataForJson()
         with open('jsonData.json', 'w') as outfile:
             json.dump(lines, fp=outfile, indent=4)
 
     def getCSVData(self):
+        """
+        Create a csv that contains the data.
+        """
         scrapedData = self._scrapDataForCSV()
         headings = scrapedData[0]
         lines = scrapedData[1]
