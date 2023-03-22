@@ -33,7 +33,7 @@ class GWScraper:
                     dictionnaryCell['title'] = textCell
                     dictionnaryCell['url'] = linkCell
                     dictionnaryLine[heading] = dictionnaryCell
-                except:
+                except Exception:
                     dictionnaryLine[heading] = textCell
             descriptions.append(dictionnaryLine)
         return descriptions

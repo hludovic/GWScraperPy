@@ -1,5 +1,5 @@
 import sys
-from GWScraper.scraper import GWScraper
+from scraper.GWScraper import GWScraper as scraper
 
 def display_help():
     print("GWScraper 0.4.1")
@@ -12,7 +12,7 @@ def display_help():
 arguments_count = len(sys.argv)
 if arguments_count == 2:
     first_argument = sys.argv[1]
-    ds = GWScraper()
+    ds = scraper()
 
     if first_argument == "-j":
         ds.getJsonData()
