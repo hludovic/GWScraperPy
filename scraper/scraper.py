@@ -1,9 +1,10 @@
 from requests import get
 from bs4 import BeautifulSoup
 import json
-import csv
+from datetime import datetime
+from db import activities
 
-class GWScraper:
+class Scraper:
     def __init__(self) -> None:
         self.url = "https://wiki.guildwars.com/wiki/Daily_activities"
     
@@ -16,6 +17,43 @@ class GWScraper:
     def _getTableData(self):
         soup = BeautifulSoup(get(self.url).content, 'html.parser')
         return soup.find('table').find('tbody').find_all('tr')
+    
+    def _dateExtractor(self, date: str):
+        date_elements = date.split()
+        if (len(date_elements) != 3):
+            raise Exception("Error date")
+        
+        month = 0
+        match date_elements[1].lower():
+            case "january":
+                month = 1
+            case "february":
+                month = 2
+            case "march":
+                month = 3
+            case "april":
+                month = 4
+            case "may":
+                month = 5
+            case "june":
+                month = 6
+            case "july":
+                month = 7
+            case "august":
+                month = 8
+            case "september":
+                month = 9
+            case "october":
+                month = 10
+            case "november":
+                month = 11
+            case "december":
+                month = 12
+            case _:
+                raise IndexError("The month of date can't be allowed")
+        day = int(date_elements[0])
+        year = int(date_elements[2])
+        return datetime(year=year, month=month, day=day)
 
     def _scrapDataForJson(self):
         descriptions = []
@@ -34,22 +72,10 @@ class GWScraper:
                     dictionnaryCell['url'] = linkCell
                     dictionnaryLine[heading] = dictionnaryCell
                 except Exception:
-                    dictionnaryLine[heading] = textCell
+                    formated_datetime = self._dateExtractor(textCell).isoformat()
+                    dictionnaryLine[heading] = formated_datetime
             descriptions.append(dictionnaryLine)
         return descriptions
-
-    def _scrapDataForCSV(self):
-        descriptions = []
-        tableData = self._getTableData()
-        headings = self._getHeadings(tableData)
-        tableData.pop(0)
-
-        for cell in tableData:
-            description = []
-            for td in cell.find_all('td'):
-                description.append(td.text.strip())
-            descriptions.append(description)
-        return (headings, descriptions)
 
     def getJsonData(self):
         """
@@ -59,15 +85,8 @@ class GWScraper:
         with open('jsonData.json', 'w') as outfile:
             json.dump(lines, fp=outfile, indent=4)
 
-    def getCSVData(self):
-        """
-        Create a csv that contains the data.
-        """
-        scrapedData = self._scrapDataForCSV()
-        headings = scrapedData[0]
-        lines = scrapedData[1]
-        with open("cvsData.csv", "w") as fichier_csv:
-            writer = csv.writer(fichier_csv, delimiter=",")
-            writer.writerow(headings)
-            for line in lines:
-                writer.writerow(line)
+    def updateDatabase(self):
+        elements = self._scrapDataForJson()
+        for element in elements:
+            date = element["Date"]
+            activities[date] = element
