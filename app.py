@@ -1,5 +1,10 @@
 from flask import Flask
 from flask_smorest import Api
+from resources.activity import blueprint as ActivityBlueprint
+from scraper.scraper import Scraper
+
+scraper = Scraper()
+scraper.updateDatabase()
 
 app = Flask(__name__)
 
@@ -12,3 +17,4 @@ app.config["OPENAPI_SWAGGER_UI_PATH"] = "/swagger-ui"
 app.config["OPENAPI_SWAGGER_UI_URL"] = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
 
 api = Api(app=app)
+api.register_blueprint(ActivityBlueprint)

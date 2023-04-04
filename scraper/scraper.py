@@ -64,6 +64,7 @@ class Scraper:
             cells = line.find_all('td')
             dictionnaryLine = {}
             for heading, cell in zip(headings, cells):
+                heading = heading.lower().replace(" ", "_")
                 textCell = cell.text.strip()
                 try:
                     linkCell = cell.find('a', href=True)['href']
@@ -72,7 +73,7 @@ class Scraper:
                     dictionnaryCell['url'] = linkCell
                     dictionnaryLine[heading] = dictionnaryCell
                 except Exception:
-                    formated_datetime = self._dateExtractor(textCell).isoformat()
+                    formated_datetime = self._dateExtractor(textCell)
                     dictionnaryLine[heading] = formated_datetime
             descriptions.append(dictionnaryLine)
         return descriptions
@@ -86,7 +87,8 @@ class Scraper:
             json.dump(lines, fp=outfile, indent=4)
 
     def updateDatabase(self):
+        # TODO: Test if the date are unic
         elements = self._scrapDataForJson()
         for element in elements:
-            date = element["Date"]
+            date = element["date"]
             activities[date] = element
