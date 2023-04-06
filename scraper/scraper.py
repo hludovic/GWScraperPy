@@ -55,7 +55,7 @@ class Scraper:
         year = int(date_elements[2])
         return datetime(year=year, month=month, day=day)
 
-    def _scrapDataForJson(self):
+    def _scrapData(self):
         descriptions = []
         tableData = self._getTableData()
         headings = self._getHeadings(tableData)
@@ -73,22 +73,17 @@ class Scraper:
                     dictionnaryCell['url'] = linkCell
                     dictionnaryLine[heading] = dictionnaryCell
                 except Exception:
-                    formated_datetime = self._dateExtractor(textCell)
-                    dictionnaryLine[heading] = formated_datetime
+                    dictionnaryLine[heading] = self._dateExtractor(textCell).isoformat()
             descriptions.append(dictionnaryLine)
         return descriptions
 
     def getJsonData(self):
-        """
-        Create a json that contanins the data.
-        """
-        lines = self._scrapDataForJson()
+        lines = self._scrapData()
         with open('jsonData.json', 'w') as outfile:
             json.dump(lines, fp=outfile, indent=4)
 
     def updateDatabase(self):
-        # TODO: Test if the date are unic
-        elements = self._scrapDataForJson()
+        elements = self._scrapData()
         for element in elements:
             date = element["date"]
             activities[date] = element
