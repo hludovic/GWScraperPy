@@ -41,9 +41,17 @@ class ActivityList(MethodView):
             for activity in activities.keys():
                 date_activity = datetime.fromisoformat(activity)
                 today = datetime.now()
-                if (date_activity.month == today.month) and (day == date_activity.day) and (today.year == date_activity.year):  # noqa: E501
+                if {
+                    (date_activity.month == today.month)
+                    and (day == date_activity.day) 
+                    and (today.year == date_activity.year)
+                    }:
                     result.append(activities[activity])
-                elif (day == 0) and (month == date_activity.month) and (today.year == date_activity.year):  # noqa: E501
+                elif {
+                    (day == 0) 
+                    and (month == date_activity.month)
+                    and (today.year == date_activity.year)
+                    }:
                     result.append(activities[activity])
             return result
 
