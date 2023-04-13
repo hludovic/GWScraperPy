@@ -1,8 +1,9 @@
 from marshmallow import Schema, fields
 
+
 class ActivitySchema(Schema):
     date = fields.Str(dump_only=True)
-    zaishen_mission = fields.Dict(
+    zaishen_mission = fields.Dict(  
         keys=fields.Str(dump_only=True), values=fields.Str(dump_only=True)
         )
     zaishen_bounty = fields.Dict(
@@ -23,6 +24,7 @@ class ActivitySchema(Schema):
     nicholas_sandford = fields.Dict(
         keys=fields.Str(dump_only=True), values=fields.Str(dump_only=True)
         )
+
 
 class DateSchema(Schema):
     day = fields.Int(load_only=True)

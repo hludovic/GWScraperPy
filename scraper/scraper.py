@@ -4,10 +4,11 @@ import json
 from datetime import datetime
 from db import activities
 
+
 class Scraper:
     def __init__(self) -> None:
         self.url = "https://wiki.guildwars.com/wiki/Daily_activities"
-    
+
     def _getHeadings(self, tableData):
         headings = []
         for th in tableData[0].find_all('th'):
@@ -17,12 +18,12 @@ class Scraper:
     def _getTableData(self):
         soup = BeautifulSoup(get(self.url).content, 'html.parser')
         return soup.find('table').find('tbody').find_all('tr')
-    
+
     def _dateExtractor(self, date: str):
         date_elements = date.split()
         if (len(date_elements) != 3):
             raise Exception("Error date")
-        
+
         month = 0
         match date_elements[1].lower():
             case "january":
@@ -73,7 +74,7 @@ class Scraper:
                     dictionnaryCell['url'] = linkCell
                     dictionnaryLine[heading] = dictionnaryCell
                 except Exception:
-                    dictionnaryLine[heading] = self._dateExtractor(textCell).isoformat()
+                    dictionnaryLine[heading] = self._dateExtractor(textCell).isoformat()  # noqa: E501
             descriptions.append(dictionnaryLine)
         return descriptions
 
