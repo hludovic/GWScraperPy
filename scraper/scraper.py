@@ -25,33 +25,32 @@ class Scraper:
             raise Exception("Error date")
 
         month = 0
-        match date_elements[1].lower():
-            case "january":
-                month = 1
-            case "february":
-                month = 2
-            case "march":
-                month = 3
-            case "april":
-                month = 4
-            case "may":
-                month = 5
-            case "june":
-                month = 6
-            case "july":
-                month = 7
-            case "august":
-                month = 8
-            case "september":
-                month = 9
-            case "october":
-                month = 10
-            case "november":
-                month = 11
-            case "december":
-                month = 12
-            case _:
-                raise IndexError("The month of date can't be allowed")
+        if date_elements[1].lower() == "january":
+            month = 1
+        elif date_elements[1].lower() == "february":
+            month = 2
+        elif date_elements[1].lower() == "march":
+            month = 3
+        elif date_elements[1].lower() == "april":
+            month = 4
+        elif date_elements[1].lower() == "may":
+            month = 5
+        elif date_elements[1].lower() == "june":
+            month = 6
+        elif date_elements[1].lower() == "july":
+            month = 7
+        elif date_elements[1].lower() == "august":
+            month = 8
+        elif date_elements[1].lower() == "september":
+            month = 9
+        elif date_elements[1].lower() == "october":
+            month = 10
+        elif date_elements[1].lower() == "november":
+            month = 11
+        elif date_elements[1].lower() == "december":
+            month = 12
+        else:
+            raise IndexError("The monthe of date can't be allowed")
         day = int(date_elements[0])
         year = int(date_elements[2])
         return datetime(year=year, month=month, day=day)

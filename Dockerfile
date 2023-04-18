@@ -6,4 +6,4 @@ RUN pip install --no-cache-dir --upgrade -r requirements.txt
 COPY . .
 CMD ["flask", "run", "--host", "0.0.0.0"]
 
-# docker run -dp 5005:5000 -w /app -v "$(pws):/app" flask-smorest-api
+# docker run -dp 5005:5000 -w /app -v "$(pws):/app" gw-api
