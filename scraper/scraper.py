@@ -17,7 +17,7 @@ class Scraper:
 
     def _getTableData(self):
         soup = BeautifulSoup(get(self.url).content, 'html.parser')
-        return soup.find('table').find('tbody').find_all('tr')
+        return soup.body.table.tbody.find_all('tr') # type: ignore
 
     def _dateExtractor(self, date: str):
         date_elements = date.split()
